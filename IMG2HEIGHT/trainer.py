@@ -19,9 +19,12 @@ logging.basicConfig(level=logging.DEBUG,
 
 def train_model(model,args,train_dataloader,test_dataloader,
     criterion,optimizer,device):
-    torch_resize2 = Resize([128, 128])
-    torch_resize3 = Resize([64, 64])
-    torch_resize4 = Resize([32, 32])
+    #torch_resize2 = Resize([128, 128])
+    #torch_resize3 = Resize([64, 64])
+    #torch_resize4 = Resize([32, 32])
+    torch_resize2 = Resize([256, 256])
+    torch_resize3 = Resize([128, 128])
+    torch_resize4 = Resize([64, 64])
     for epo in trange(args.num_epochs):
         epoch_start = datetime.datetime.now()
 
