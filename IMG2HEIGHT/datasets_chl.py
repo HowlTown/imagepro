@@ -38,7 +38,7 @@ class TrainDataset(Dataset):
         image = np.transpose(image,(1,2,0))
         
         # 读取label数据并转置成512*512*1
-        label = io.imread(label) 
+        label = io.imread(label_path) 
         label = np.reshape(label,(label.shape[0],label.shape[1],1))
         
         # 格式化为float

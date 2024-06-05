@@ -5,7 +5,7 @@ import logging
 import datetime
 import numpy as np
 from tqdm import trange
-from skimage.measure import compare_ssim
+#from skimage.measure import compare_ssim
 from torchvision.transforms import Resize
 
 

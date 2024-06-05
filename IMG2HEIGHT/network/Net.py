@@ -100,7 +100,8 @@ class Resnet50(nn.Module):
 
     def __init__(self, ):
         super(Resnet50, self).__init__()
-        self.layer1 = nn.Sequential(nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=1),
+        # 在这里将inchannel改为4
+        self.layer1 = nn.Sequential(nn.Conv2d(in_channels=4, out_channels=32, kernel_size=3, stride=1, padding=1),
                                     nn.BatchNorm2d(32),
                                     nn.ReLU())
         self.layer2 = nn.Sequential(ConvBlock([32, 32, 32, 64], stride=2),

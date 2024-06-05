@@ -7,7 +7,8 @@ import logging
 import datetime
 import numpy as np
 from tqdm import trange
-from skimage.measure import compare_ssim
+#from skimage.measure import compare_ssim
+from skimage.metrics import structural_similarity as compare_ssim
 from sklearn import metrics
 from sklearn.metrics import mean_squared_error, r2_score
 from scipy.stats import pearsonr

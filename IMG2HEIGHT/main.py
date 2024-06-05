@@ -12,7 +12,7 @@ from torch.utils.data.dataloader import DataLoader
 from tqdm import tqdm
 from utils import (Nptranspose,Rotation,H_Mirror,V_Mirror)
 #from datasets import TrainDataset
-from .datasets_chl import TrainDataset
+from datasets_chl import TrainDataset
 import trainer
 from network.Net import Resnet50
 
