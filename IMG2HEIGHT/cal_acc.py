@@ -18,11 +18,17 @@ def cal_psnr(img1, img2):
 def cal_ssim(img1,img2):
     ssim_list=[]
     for i in range(img1.shape[0]):
-        print(img1[i].shape,img2[i].shape)
-        x=img1[i][:].cpu().numpy().transpose(1,2,0).astype('float32')
-        y=img2[i][:].cpu().numpy().transpose(1,2,0).astype('float32')
-        print(x.shape,y.shape)
-        ssim,diff=compare_ssim(x, y, full=True,multichannel=False)
+        x=img1[i][0, :, :].cpu().numpy().astype('float32')
+        y=img2[i][0, :, :].cpu().numpy().astype('float32')
+        #np.save('x.npy',x)
+        #np.save('y.npy',y)
+        #x = (x - np.min(x))/(np.max(x) - np.min(x))
+        #y = (y - np.min(y))/(np.max(y) - np.min(y))
+        #print(np.max(x),np.min(x))
+        #x=x.transpose(1,2,0)
+        #y=y.transpose(1,2,0)
+        #print(x.shape,y.shape)
+        ssim,diff = compare_ssim(x, y, full=True,multichannel=False,data_range=1)
         #ssim,diff=compare_ssim(x, y, full=True,channel_axis=None)
         ssim_list.append(ssim)
     return np.mean(ssim_list)
@@ -94,9 +100,9 @@ def cal_zncc(img1, img2):
 
 
 if __name__ == '__main__':
-	
 	a=torch.randn((4,1,512,512))
 	b=torch.randn((4,1,512,512))
+	print(cal_ssim(a,b))
 	result=cal_mre(a,b)
 	print(result)
 	# a=np.array((4,1,512,512))
