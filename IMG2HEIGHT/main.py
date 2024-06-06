@@ -33,26 +33,28 @@ def weight_init(m):
 
 
 if __name__ == '__main__':
+    dataset_path = "../IEEE_data/dataset_small"
     src_start = datetime.datetime.now()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_image_file',  default="../IEEE_data/dataset/train/image/", type=str)
-    parser.add_argument('--train_label_file',  default="../IEEE_data/dataset/train/dsm/", type=str)
-    parser.add_argument('--test_image_file', default="../IEEE_data/dataset/test/image/", type=str)
-    parser.add_argument('--test_label_file', default="../IEEE_data/dataset/test/dsm/", type=str)
+    parser.add_argument('--train_image_file',  default=dataset_path+"/train/image/", type=str)
+    parser.add_argument('--train_label_file',  default=dataset_path+"/train/dsm/", type=str)
+    parser.add_argument('--test_image_file', default=dataset_path+"/test/image/", type=str)
+    parser.add_argument('--test_label_file', default=dataset_path+"/test/dsm/", type=str)
 
     parser.add_argument('--num_channels', type=int, default=3)
     parser.add_argument('--num_classes', type=int, default=1)
     parser.add_argument('--lr', type=float, default=0.0002)
     parser.add_argument('--batch_size', type=int, default=2)
     parser.add_argument('--num_epochs', type=int, default=200)
-    parser.add_argument('--num_workers', type=int, default=6)
+    parser.add_argument('--num_workers', type=int, default=1)
     parser.add_argument('--seed', type=int, default=123)
     args = parser.parse_args()
     '''
     设置模型、损失函数和优化器
     '''
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    print(device)
     model = Resnet50()
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(),lr= args.lr)
@@ -63,7 +65,8 @@ if __name__ == '__main__':
     '''
     train_composed = torchvision.transforms.Compose([Rotation(),H_Mirror(),V_Mirror(),Nptranspose()])
     train_dataset = TrainDataset(args.train_image_file,args.train_label_file,train_composed)
-    
+    #print(len(train_dataset))
+    #print(train_dataset[0]['image'].shape, train_dataset[0]['label'].shape)
     train_dataloader = DataLoader(dataset=train_dataset,
                                   batch_size=args.batch_size,
                                   shuffle=True,
@@ -72,7 +75,9 @@ if __name__ == '__main__':
 
     test_composed = torchvision.transforms.Compose([Nptranspose()])
     test_dataset = TrainDataset(args.test_image_file,args.test_label_file,test_composed)
-    test_dataloader = DataLoader(dataset=test_dataset, batch_size=6,num_workers=args.num_workers,
+    #print(test_dataset[0]['image'].shape, test_dataset[0]['label'].shape)
+    #print(len(test_dataset))
+    test_dataloader = DataLoader(dataset=test_dataset, batch_size=2,num_workers=args.num_workers,
                                   pin_memory=True,drop_last=True)
     '''
     Training model

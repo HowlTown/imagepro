@@ -18,9 +18,12 @@ def cal_psnr(img1, img2):
 def cal_ssim(img1,img2):
     ssim_list=[]
     for i in range(img1.shape[0]):
+        print(img1[i].shape,img2[i].shape)
         x=img1[i][:].cpu().numpy().transpose(1,2,0).astype('float32')
         y=img2[i][:].cpu().numpy().transpose(1,2,0).astype('float32')
-        ssim,diff=compare_ssim(x, y, full=True,multichannel=True)
+        print(x.shape,y.shape)
+        ssim,diff=compare_ssim(x, y, full=True,multichannel=False)
+        #ssim,diff=compare_ssim(x, y, full=True,channel_axis=None)
         ssim_list.append(ssim)
     return np.mean(ssim_list)
 def cal_mae(img1, img2):

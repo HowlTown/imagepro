@@ -94,6 +94,7 @@ def train_model(model,args,train_dataloader,test_dataloader,
                 # all_test_iter_loss.append(iter_loss)
                 eval_loss += iter_loss
 
+                print(output.shape,label.shape)
                 psnr=cal_psnr(output, label)
                 ssim=cal_ssim(output, label)
                 mae=cal_mae(output, label)
