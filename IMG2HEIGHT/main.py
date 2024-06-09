@@ -33,7 +33,7 @@ def weight_init(m):
 
 
 if __name__ == '__main__':
-    dataset_path = "../IEEE_data/dataset_small"
+    dataset_path = "../IEEE_data/dataset"
     src_start = datetime.datetime.now()
 
     parser = argparse.ArgumentParser()
@@ -46,8 +46,8 @@ if __name__ == '__main__':
     parser.add_argument('--num_classes', type=int, default=1)
     parser.add_argument('--lr', type=float, default=0.0002)
     parser.add_argument('--batch_size', type=int, default=2)
-    parser.add_argument('--num_epochs', type=int, default=200)
-    parser.add_argument('--num_workers', type=int, default=1)
+    parser.add_argument('--num_epochs', type=int, default=50)
+    parser.add_argument('--num_workers', type=int, default=6)
     parser.add_argument('--seed', type=int, default=123)
     args = parser.parse_args()
     '''
@@ -58,6 +58,7 @@ if __name__ == '__main__':
     model = Resnet50()
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(),lr= args.lr)
+    #optimizer = optim.SGD(model.parameters(),lr= args.lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer,step_size=20, gamma=0.9)
     
     '''
