@@ -33,7 +33,7 @@ def weight_init(m):
 
 
 if __name__ == '__main__':
-    dataset_path = "../IEEE_data/dataset"
+    dataset_path = "../IEEE_data/dataset_small"
     src_start = datetime.datetime.now()
 
     parser = argparse.ArgumentParser()
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_classes', type=int, default=1)
     parser.add_argument('--lr', type=float, default=0.0002)
     parser.add_argument('--batch_size', type=int, default=2)
-    parser.add_argument('--num_epochs', type=int, default=50)
+    parser.add_argument('--num_epochs', type=int, default=10)
     parser.add_argument('--num_workers', type=int, default=6)
     parser.add_argument('--seed', type=int, default=123)
     args = parser.parse_args()
@@ -55,7 +55,8 @@ if __name__ == '__main__':
     '''
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     print(device)
-    model = Resnet50()
+    print("num_channels = %d" % (args.num_channels))
+    model = Resnet50(args.num_channels)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(),lr= args.lr)
     #optimizer = optim.SGD(model.parameters(),lr= args.lr)
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     Prepare data
     '''
     train_composed = torchvision.transforms.Compose([Rotation(),H_Mirror(),V_Mirror(),Nptranspose()])
-    train_dataset = TrainDataset(args.train_image_file,args.train_label_file,train_composed)
+    train_dataset = TrainDataset(args.num_channels,args.train_image_file,args.train_label_file,train_composed)
     #print(len(train_dataset))
     #print(train_dataset[0]['image'].shape, train_dataset[0]['label'].shape)
     train_dataloader = DataLoader(dataset=train_dataset,
@@ -75,7 +76,7 @@ if __name__ == '__main__':
                                   pin_memory=True,drop_last=True)
 
     test_composed = torchvision.transforms.Compose([Nptranspose()])
-    test_dataset = TrainDataset(args.test_image_file,args.test_label_file,test_composed)
+    test_dataset = TrainDataset(args.num_channels,args.test_image_file,args.test_label_file,test_composed)
     #print(test_dataset[0]['image'].shape, test_dataset[0]['label'].shape)
     #print(len(test_dataset))
     test_dataloader = DataLoader(dataset=test_dataset, batch_size=2,num_workers=args.num_workers,

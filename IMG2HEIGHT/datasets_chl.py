@@ -9,8 +9,9 @@ from utils import (Nptranspose,Rotation,H_Mirror,V_Mirror)
 # from utils import (RandomCrop,StdCrop)
 
 class TrainDataset(Dataset):
-    def __init__(self,image_dir,label_dir,transform=None):
-
+    def __init__(self,num_channels,image_dir,label_dir,transform=None):
+        
+        self.num_channels = num_channels
         self.label_dir = label_dir
         self.image_dir = image_dir 
         
@@ -33,9 +34,10 @@ class TrainDataset(Dataset):
         image_path = self.image_dir + self.data[index] + ".npy"
         label_path = self.label_dir + self.data[index] + ".tif"
         
-        # 读取image数据并转置成512*512*4
+        # 读取image数据并转置成512*512*num_channels
         image = np.load(image_path)
         image = np.transpose(image,(1,2,0))
+        image = image[:, :, :self.num_channels]
         
         # 读取label数据并转置成512*512*1
         label = io.imread(label_path) 
