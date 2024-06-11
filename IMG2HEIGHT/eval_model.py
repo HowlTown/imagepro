@@ -32,7 +32,7 @@ def eval_model(model_path, image_dir, label_dir):
     
     # 准备数据  
     test_composed = torchvision.transforms.Compose([Nptranspose()])
-    test_dataset = TrainDataset(image_dir,label_dir,test_composed)
+    test_dataset = TrainDataset(3,image_dir,label_dir,test_composed)
     test_dataloader = DataLoader(dataset = test_dataset, batch_size=2,num_workers=1,
                                   pin_memory=True,drop_last=True)
 
@@ -73,7 +73,7 @@ def eval_model(model_path, image_dir, label_dir):
     print(avg_rmse,avg_rmse1)
 
 if __name__ == "__main__":
-    model = "model\seg49.pkl"
+    model = "model\seg=49_3.pkl"
     image = "../IEEE_data/dataset/test/image/"
     label = "../IEEE_data/dataset/test/dsm/"
     eval_model(model,image,label)
